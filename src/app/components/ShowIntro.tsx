@@ -189,7 +189,18 @@ export default function ShowIntro() {
       <span className="relative inline-flex items-center rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-300 ring-1 ring-cyan-400/25">
         About the show
       </span>
-
+{/* Banner — responsive, subtle ring, no layout shift */}
+<div className="mb-6 -mx-2 sm:mx-0">
+  <Image
+    src="/logo-banner.webp"
+    alt="100 Metal Songs"
+    width={1600}
+    height={420}
+    priority
+    sizes="(max-width: 640px) 96vw, (max-width: 1024px) 80vw, 1200px"
+    className="w-full h-16 sm:h-20 md:h-24 lg:h-28 object-contain rounded-lg ring-1 ring-white/10"
+  />
+</div>
       {/* content */}
       <div className="relative mt-4 md:pr-44">
         <h1 className="text-2xl md:text-3xl font-semibold text-white">

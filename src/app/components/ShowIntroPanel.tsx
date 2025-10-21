@@ -39,6 +39,18 @@ const listenRow: Plat[] = [
 const watchRow: Plat[] = [
   { href: "https://www.youtube.com/@100MetalSongs", label: "YouTube", icon: <span>▶️</span> },
 ];
+{/* Brand banner — positioned above the pill */}
+<div className="mb-6 -mx-2 sm:mx-0">
+  <Image
+    src="/logo-banner.webp"  // use "/images/logo-banner.webp" if you put it under /public/images/
+    alt="100 Songs That Define Heavy Metal"
+    width={1600}
+    height={420}
+    priority
+    sizes="(max-width: 640px) 96vw, (max-width: 1024px) 80vw, 1200px"
+    className="w-full h-16 sm:h-20 md:h-24 lg:h-28 object-contain rounded-lg ring-1 ring-white/10"
+  />
+</div>
 
 function Pill({ href, label, icon }: Plat) {
   return (

@@ -7,10 +7,10 @@ import ShowIntroPanel from "./ShowIntroPanel";
 export default function ShowIntroSection() {
   return (
     <section className="relative">
-      {/* Mobile-only brand banner (pulls from /public/logo-banner.webp) */}
+      {/* Mobile-only brand banner (uses the v2 file under /public) */}
       <div className="block md:hidden mb-4 -mx-1 sm:mx-0">
         <Image
-          src="/logo-banner.webp" // file is at /public/logo-banner.webp
+          src="/logo-banner-v2.webp"
           alt="100 Songs That Define Heavy Metal"
           width={1600}
           height={420}
@@ -20,7 +20,7 @@ export default function ShowIntroSection() {
         />
       </div>
 
-      {/* Existing intro panel (desktop still uses the right-aligned art in the panel) */}
+      {/* Existing intro panel */}
       <ShowIntroPanel />
     </section>
   );

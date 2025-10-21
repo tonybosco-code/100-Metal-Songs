@@ -1,8 +1,6 @@
 // src/app/components/ShowIntroPanel.tsx
 "use client";
 
-import Image from "next/image";
-
 const LINKS = {
   apple:
     "https://podcasts.apple.com/us/podcast/100-songs-that-define-heavy-metal/id1778316009",
@@ -32,7 +30,6 @@ type PillIcon =
 function BrandIcon({ name, className = "h-3.5 w-3.5" }: { name: PillIcon; className?: string }) {
   switch (name) {
     case "apple-podcasts":
-      // Apple Podcasts glyph (stylized)
       return (
         <svg viewBox="0 0 24 24" className={className} aria-hidden fill="currentColor">
           <path d="M12 2a10 10 0 1 1 0 20A10 10 0 0 1 12 2Zm0 4.8a4.8 4.8 0 0 0-1.3 9.4v2.3a1.3 1.3 0 1 0 2.6 0v-2.3A4.8 4.8 0 0 0 12 6.8Zm0 2.6a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4Z" />
@@ -83,15 +80,7 @@ function BrandIcon({ name, className = "h-3.5 w-3.5" }: { name: PillIcon; classN
   }
 }
 
-function Pill({
-  href,
-  label,
-  icon,
-}: {
-  href: string;
-  label: string;
-  icon: PillIcon;
-}) {
+function Pill({ href, label, icon }: { href: string; label: string; icon: PillIcon }) {
   return (
     <a
       href={href}
@@ -110,7 +99,17 @@ export default function ShowIntroPanel() {
                  bg-gradient-to-b from-zinc-900/60 via-zinc-900/30 to-transparent
                  p-4 md:p-6 lg:p-8"
     >
-      <div className="relative grid grid-cols-1 md:grid-cols-[1fr,auto] gap-6 items-start">
+      {/* Masthead strip (restored) */}
+      <div className="w-full overflow-hidden">
+        <img
+          src="/logo-masthead.webp"
+          alt="100 Metal Songs masthead"
+          className="block w-full h-auto max-h-36 object-contain"
+          loading="eager"
+        />
+      </div>
+
+      <div className="mt-6 relative grid grid-cols-1 md:grid-cols-[1fr,auto] gap-6 items-start">
         {/* Left: copy + platform pills */}
         <div>
           <div className="inline-flex items-center rounded-full bg-blue-500/10 ring-1 ring-blue-400/40 px-3 py-1 text-xs font-medium text-blue-300 shadow-[0_0_14px_rgba(96,165,250,0.35)]">
@@ -163,7 +162,6 @@ export default function ShowIntroPanel() {
         {/* Right: cover art with subtle red glow (desktop only) */}
         <div className="hidden md:block justify-self-end">
           <div className="relative h-36 w-36 lg:h-40 lg:w-40 rounded-xl overflow-hidden ring-1 ring-white/10 shadow-[0_0_28px_rgba(239,68,68,0.25)]">
-            {/* Using <img> to avoid remotePatterns config */}
             <img
               src="https://cdn.sanity.io/images/yd8iqvcg/production/8aa72bb1b387eba52a058b29af4c77fa1779985f-3000x3000.heif?w=400&h=400&fit=crop"
               alt="100 Songs That Define Heavy Metal cover"

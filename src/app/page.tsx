@@ -3,6 +3,7 @@ import { createClient } from "@sanity/client";
 import HeroLatest from "@/app/components/HeroLatest";
 import EpisodesGridClean from "@/app/components/EpisodesGridClean";
 import EmailSignup from "@/app/components/EmailSignup";
+import ShowIntroPanel from "@/app/components/ShowIntroPanel";
 
 /* ---------------- Sanity client (read-only) ---------------- */
 const client = createClient({
@@ -241,20 +242,20 @@ export default async function Page() {
   ]);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8 space-y-10">
-      {/* Show Intro */}
-      <ShowIntroSection />
+<main className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8 space-y-10">
 
-      {/* Latest Episode */}
-      {hero ? <HeroLatest ep={hero} /> : null}
+  {/* Show Intro */}
+  <ShowIntroPanel />   {/* ✅ This is the one that contains your mobile banner */}
 
-      {/* CTA — email signup (restored) */}
-      <EmailSignup
-        className="mt-8 md:mt-10"
-        heading="Join the community"
-        subtext="Get new episodes, behind-the-scenes updates, and exclusive metal stories!"
-      />
+  {/* Latest Episode */}
+  {hero ? <HeroLatest ep={hero} /> : null}
 
+  {/* CTA — email signup */}
+  <EmailSignup
+    className="mt-8 md:mt-10"
+    heading="Join the community"
+    subtext="Get new episodes, behind-the-scenes updates, and exclusive metal stories!"
+  />
       {/* Episodes grid */}
       <section className="mt-2">
         <h2 className="text-sm font-medium text-zinc-300 mb-4">Recent Episodes</h2>

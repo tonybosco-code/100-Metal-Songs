@@ -10,7 +10,7 @@ export default function ShowIntroSection() {
       {/* Mobile-only brand banner (uses the v2 file under /public) */}
       <div className="block md:hidden mb-4 -mx-1 sm:mx-0">
         <Image
-          src="/logo-banner-v2.webp"
+          src="/logo-masthead.webp"
           alt="100 Songs That Define Heavy Metal"
           width={1600}
           height={420}

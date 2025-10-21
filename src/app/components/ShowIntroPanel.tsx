@@ -33,7 +33,7 @@ export default function ShowIntroPanel() {
 {/* MOBILE BRAND BANNER — mobile only */}
 <div className="block md:hidden mb-4">
   <img
-    src="/logo-banner-v2.webp?v=3"
+    src="/logo-masthead.webp?v=3"
     alt="100 Songs That Define Heavy Metal"
     className="w-full h-16 sm:h-20 object-contain rounded-lg ring-1 ring-white/10"
     loading="eager"

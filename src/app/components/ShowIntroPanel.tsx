@@ -42,7 +42,7 @@ const watchRow: Plat[] = [
 {/* Brand banner — positioned above the pill */}
 <div className="mb-6 -mx-2 sm:mx-0">
   <Image
-    src="/logo-banner.webp"  // use "/images/logo-banner.webp" if you put it under /public/images/
+    src="/logo-banner.webp"  // use "/logo-banner.webp" if you put it under /public/images/
     alt="100 Songs That Define Heavy Metal"
     width={1600}
     height={420}

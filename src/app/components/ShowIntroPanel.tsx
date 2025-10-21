@@ -30,18 +30,16 @@ export default function ShowIntroPanel() {
         "px-4 md:px-6 lg:px-8 py-5 md:py-8"
       )}
     >
-      {/* --- MOBILE-ONLY BANNER (hidden on md+) --- */}
-      <div className="md:hidden mb-4">
-        <Image
-          src="/logo-banner-v2.webp" // make sure this file exists in /public
-          alt="100 Metal Songs"
-          width={1600}
-          height={600}
-          priority
-          className="w-full rounded-xl ring-1 ring-white/10 shadow-[0_0_24px_rgba(0,0,0,0.6)]"
-        />
-      </div>
-
+{/* MOBILE BRAND BANNER — mobile only */}
+<div className="block md:hidden mb-4">
+  <img
+    src="/logo-banner-v2.webp?v=3"
+    alt="100 Songs That Define Heavy Metal"
+    className="w-full h-16 sm:h-20 object-contain rounded-lg ring-1 ring-white/10"
+    loading="eager"
+    decoding="async"
+  />
+</div>
       {/* Header row: title + cover art on desktop */}
       <div className="flex items-start gap-6">
         <div className="min-w-0 flex-1">

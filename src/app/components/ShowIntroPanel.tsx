@@ -47,9 +47,7 @@ export default function ShowIntroPanel() {
             About the show
           </span>
 
-          <h1 className="mt-3 text-2xl md:text-3xl lg:text-[32px] font-semibold text-white">
-            100 Songs That Define Heavy Metal
-          </h1>
+<h1 className="sr-only md:not-sr-only mt-3 text-2xl md:text-3xl lg:text-[32px] font-semibold text-white">
 
           <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-zinc-300">
             <em>100 Songs That Define Heavy Metal</em> is a weekly podcast from{" "}

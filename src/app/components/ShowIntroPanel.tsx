@@ -1,6 +1,9 @@
 // src/app/components/ShowIntroPanel.tsx
 "use client";
 
+import Image from "next/image";
+
+/* ------------------- Platform Links ------------------- */
 const LINKS = {
   apple:
     "https://podcasts.apple.com/us/podcast/100-songs-that-define-heavy-metal/id1778316009",
@@ -17,75 +20,34 @@ const LINKS = {
   youtube: "https://www.youtube.com/@100MetalSongs",
 };
 
-type PillIcon =
-  | "apple-podcasts"
-  | "spotify"
-  | "iheart"
-  | "youtube-music"
-  | "amazon-music"
-  | "pocket-casts"
-  | "overcast"
-  | "youtube";
+/* ------------------- Brand Colors ------------------- */
+const BRAND_COLORS: Record<string, string> = {
+  "apple-podcasts": "#A06BFF",
+  spotify: "#1DB954",
+  iheart: "#EC1C24",
+  "youtube-music": "#FF0000",
+  "amazon-music": "#00A8E1",
+  "pocket-casts": "#F43C3C",
+  overcast: "#FF9500",
+  youtube: "#FF0000",
+};
 
-function BrandIcon({
-  name,
-  className = "h-4 w-4 md:h-3.5 md:w-3.5",
-}: {
-  name: PillIcon;
-  className?: string;
-}) {
-  switch (name) {
-    case "apple-podcasts":
-      return (
-        <svg viewBox="0 0 24 24" className={className} aria-hidden fill="currentColor">
-          <path d="M12 2a10 10 0 1 1 0 20A10 10 0 0 1 12 2Zm0 4.8a4.8 4.8 0 0 0-1.3 9.4v2.3a1.3 1.3 0 1 0 2.6 0v-2.3A4.8 4.8 0 0 0 12 6.8Zm0 2.6a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4Z" />
-        </svg>
-      );
-    case "spotify":
-      return (
-        <svg viewBox="0 0 24 24" className={className} aria-hidden fill="currentColor">
-          <path d="M12 1.8a10.2 10.2 0 1 1 0 20.4A10.2 10.2 0 0 1 12 1.8Zm4.7 13.8a.9.9 0 0 0-1.2-.3c-3.4 2.1-7.7 1.2-10.2-.1a.9.9 0 1 0-.8 1.6c1.5.8 3.2 1.3 5.1 1.3 1.9 0 4-.5 6-1.7.4-.2.6-.8.3-1.2Z" />
-        </svg>
-      );
-    case "iheart":
-      return (
-        <svg viewBox="0 0 24 24" className={className} aria-hidden fill="currentColor">
-          <path d="M12 7.5c1.9-2.3 6.4-2.2 8.1.6 1.6 2.7.3 5.6-1.7 7.6l-5.7 5.7a1 1 0 0 1-1.4 0L5.6 15.7C3.6 13.7 2.3 10.8 3.9 8.1 5.6 5.3 10.1 5.2 12 7.5Z" />
-        </svg>
-      );
-    case "youtube-music":
-      return (
-        <svg viewBox="0 0 24 24" className={className} aria-hidden fill="currentColor">
-          <path d="M12 2.2a9.8 9.8 0 1 0 0 19.6 9.8 9.8 0 0 0 0-19.6Zm-2.2 6.6 6 3.2-6 3.2V8.8Z" />
-        </svg>
-      );
-    case "amazon-music":
-      return (
-        <svg viewBox="0 0 24 24" className={className} aria-hidden fill="currentColor">
-          <path d="M3 17.5c2.7 1.9 6 3 9.6 3s6.9-1.1 9.6-3l.8 1.3c-2.9 2.1-6.5 3.2-10.4 3.2S5.1 20.9 2.2 18.8l.8-1.3Z" />
-        </svg>
-      );
-    case "pocket-casts":
-      return (
-        <svg viewBox="0 0 24 24" className={className} aria-hidden fill="currentColor">
-          <path d="M12 3.2A8.8 8.8 0 1 0 20.8 12H19a7 7 0 1 1-7-7V3.2Z" />
-        </svg>
-      );
-    case "overcast":
-      return (
-        <svg viewBox="0 0 24 24" className={className} aria-hidden fill="currentColor">
-          <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16Zm0 2.8a.9.9 0 0 0-.9.9v8.6a.9.9 0 1 0 1.8 0V7.7a.9.9 0 0 0-.9-.9Z" />
-        </svg>
-      );
-    case "youtube":
-      return (
-        <svg viewBox="0 0 24 24" className={className} aria-hidden fill="currentColor">
-          <path d="M23 7.5s-.2-1.7-.8-2.4c-.8-.8-1.7-.8-2.1-.9C16.8 4 12 4 12 4s-4.8 0-8.1.2c-.4 0-1.3.1-2.1.9C1.2 5.8 1 7.5 1 7.5s-.2 2-.2 4.1v.8c0 2.1.2 4.1.2 4.1s.2 1.7.8 2.4c.8.8 1.8.8 2.2.9 1.6.2 6.9.2 6.9.2s4.8 0 8.1-.2c.4 0 1.3-.1 2.1-.9.6-.7.8-2.4.8-2.4s.2-2.1.2-4.1v-.8c0-2.1-.2-4.1-.2-4.1ZM9.8 14.7V7.9l6.2 3.4-6.2 3.4Z" />
-        </svg>
-      );
-  }
+/* ------------------- Brand Icon ------------------- */
+function BrandIcon({ name }: { name: string }) {
+  const color = BRAND_COLORS[name] || "#FFFFFF";
+  return (
+    <Image
+      src={`/icons/${name}.svg`}
+      alt={`${name} icon`}
+      width={18}
+      height={18}
+      className={`transition-all duration-300 invert brightness-100 group-hover:brightness-110 group-hover:drop-shadow-[0_0_6px_${color}]`}
+      priority
+    />
+  );
 }
 
+/* ------------------- Pill Component ------------------- */
 function Pill({
   href,
   label,
@@ -93,19 +55,33 @@ function Pill({
 }: {
   href: string;
   label: string;
-  icon: PillIcon;
+  icon: string;
 }) {
+  const hoverColor = BRAND_COLORS[icon] || "#FFFFFF";
   return (
     <a
       href={href}
-      className="inline-flex items-center gap-2 rounded-full bg-zinc-900/70 px-3 py-2 text-xs md:py-1.5 md:text-[13px] text-zinc-200 ring-1 ring-white/10 hover:bg-zinc-800 transition"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group inline-flex items-center gap-2 rounded-full bg-zinc-900/70 px-3 py-2 text-xs md:py-1.5 md:text-[13px] text-zinc-200 ring-1 ring-white/10 transition-all hover:ring-1"
+      style={{
+        boxShadow: `0 0 0 rgba(0,0,0,0)`,
+      }}
     >
       <BrandIcon name={icon} />
-      <span>{label}</span>
+      <span
+        className="transition-all group-hover:text-white"
+        style={{
+          textShadow: `0 0 6px ${hoverColor}`,
+        }}
+      >
+        {label}
+      </span>
     </a>
   );
 }
 
+/* ------------------- Main Component ------------------- */
 export default function ShowIntroPanel() {
   return (
     <section
@@ -113,7 +89,7 @@ export default function ShowIntroPanel() {
                  bg-gradient-to-b from-zinc-900/60 via-zinc-900/30 to-transparent
                  p-4 md:p-6 lg:p-8"
     >
-      {/* Masthead strip */}
+      {/* Masthead */}
       <div className="w-full overflow-hidden">
         <img
           src="/logo-masthead.webp"
@@ -129,7 +105,7 @@ export default function ShowIntroPanel() {
           About the show
         </div>
 
-        {/* H1: hidden on mobile, visible md+ (SEO safe) */}
+        {/* H1 hidden on mobile, visible md+ (SEO safe) */}
         <h1 className="sr-only md:not-sr-only mt-3 text-2xl md:text-3xl font-semibold text-white">
           100 Songs That Define Heavy Metal
         </h1>
@@ -142,9 +118,8 @@ export default function ShowIntroPanel() {
           angles, and why the song still matters today.
         </p>
 
-        {/* Platform pills — wrap nicely on small screens */}
+        {/* Platform pills */}
         <div className="mt-5 space-y-3">
-          {/* LISTEN ON */}
           <div>
             <p className="text-[11px] uppercase tracking-widest text-zinc-400 mb-1.5">
               Listen on
@@ -160,7 +135,6 @@ export default function ShowIntroPanel() {
             </div>
           </div>
 
-          {/* WATCH ON */}
           <div>
             <p className="text-[11px] uppercase tracking-widest text-zinc-400 mb-1.5">
               Watch on

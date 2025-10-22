@@ -10,6 +10,7 @@ import {
   SiOvercast,
   SiYoutube,
 } from "@icons-pack/react-simple-icons";
+import { SiAmazonmusic as RIAmazonMusic } from "react-icons/si";
 
 /* ------------------- Platform Links ------------------- */
 const LINKS = {
@@ -42,34 +43,25 @@ const BRAND_COLORS: Record<string, string> = {
 
 /* ------------------- Icon Mapper ------------------- */
 function BrandIcon({ name }: { name: string }) {
-  const common = "h-4 w-4 md:h-3.5 md:w-3.5 text-white";
+  const cls = "h-4 w-4 md:h-3.5 md:w-3.5 text-white";
   switch (name) {
     case "apple-podcasts":
-      return <SiApplepodcasts className={common} title="" />;
+      return <SiApplepodcasts className={cls} title="" />;
     case "spotify":
-      return <SiSpotify className={common} title="" />;
+      return <SiSpotify className={cls} title="" />;
     case "iheart":
-      return <SiIheartradio className={common} title="" />;
+      return <SiIheartradio className={cls} title="" />;
     case "youtube-music":
-      return <SiYoutubemusic className={common} title="" />;
+      return <SiYoutubemusic className={cls} title="" />;
     case "pocket-casts":
-      return <SiPocketcasts className={common} title="" />;
+      return <SiPocketcasts className={cls} title="" />;
     case "overcast":
-      return <SiOvercast className={common} title="" />;
+      return <SiOvercast className={cls} title="" />;
     case "youtube":
-      return <SiYoutube className={common} title="" />;
-
-    /* Amazon Music: use local official SVG */
+      return <SiYoutube className={cls} title="" />;
     case "amazon-music":
-      return (
-        <img
-          src="/icons/amazon-music.svg"
-          alt=""
-          className="h-4 w-4 md:h-3.5 md:w-3.5"
-          loading="eager"
-        />
-      );
-
+      // Use react-icons Simple Icons (has Amazon Music)
+      return <RIAmazonMusic className={cls} title="" />;
     default:
       return null;
   }
@@ -97,7 +89,7 @@ function Pill({
                  hover:bg-zinc-800"
       style={{ color: "white" }}
     >
-      {/* Glow: mobile default ON (opacity-40), desktop on hover */}
+      {/* Glow: mobile default ON, desktop on hover */}
       <span
         className="pointer-events-none absolute inset-[-2px] rounded-full blur-lg
                    opacity-40 md:opacity-0 md:group-hover:opacity-100

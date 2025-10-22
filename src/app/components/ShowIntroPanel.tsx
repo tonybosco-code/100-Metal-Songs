@@ -1,8 +1,6 @@
 // src/app/components/ShowIntroPanel.tsx
 "use client";
 
-import Image from "next/image";
-
 /* ------------------- Platform Links ------------------- */
 const LINKS = {
   apple:
@@ -34,20 +32,19 @@ const BRAND_COLORS: Record<string, string> = {
 
 /* ------------------- Brand Icon ------------------- */
 function BrandIcon({ name }: { name: string }) {
-  const color = BRAND_COLORS[name] || "#FFFFFF";
   return (
-    <Image
+    <img
       src={`/icons/${name}.svg`}
-      alt={`${name} icon`}
+      alt=""
       width={18}
       height={18}
-      className={`transition-all duration-300 invert brightness-100 group-hover:brightness-110 group-hover:drop-shadow-[0_0_6px_${color}]`}
-      priority
+      className="h-4 w-4 md:h-3.5 md:w-3.5 invert brightness-110"
+      loading="eager"
     />
   );
 }
 
-/* ------------------- Pill Component ------------------- */
+/* ------------------- Pill ------------------- */
 function Pill({
   href,
   label,
@@ -57,26 +54,27 @@ function Pill({
   label: string;
   icon: string;
 }) {
-  const hoverColor = BRAND_COLORS[icon] || "#FFFFFF";
+  const brandColor = BRAND_COLORS[icon] || "#ffffff";
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex items-center gap-2 rounded-full bg-zinc-900/70 px-3 py-2 text-xs md:py-1.5 md:text-[13px] text-zinc-200 ring-1 ring-white/10 transition-all hover:ring-1"
+      className="group relative inline-flex items-center gap-2 rounded-full bg-zinc-900/70 px-3 py-2 text-xs md:py-1.5 md:text-[13px] text-zinc-200 ring-1 ring-white/10 transition-all hover:bg-zinc-800"
       style={{
         boxShadow: `0 0 0 rgba(0,0,0,0)`,
       }}
     >
       <BrandIcon name={icon} />
+      <span className="text-zinc-200 group-hover:text-white">{label}</span>
+
+      {/* Glow overlay on hover */}
       <span
-        className="transition-all group-hover:text-white"
+        className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"
         style={{
-          textShadow: `0 0 6px ${hoverColor}`,
+          boxShadow: `0 0 10px 2px ${brandColor}55, 0 0 25px ${brandColor}33`,
         }}
-      >
-        {label}
-      </span>
+      />
     </a>
   );
 }
@@ -105,7 +103,6 @@ export default function ShowIntroPanel() {
           About the show
         </div>
 
-        {/* H1 hidden on mobile, visible md+ (SEO safe) */}
         <h1 className="sr-only md:not-sr-only mt-3 text-2xl md:text-3xl font-semibold text-white">
           100 Songs That Define Heavy Metal
         </h1>
@@ -179,3 +176,4 @@ export default function ShowIntroPanel() {
     </section>
   );
 }
+

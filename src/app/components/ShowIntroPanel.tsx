@@ -6,7 +6,7 @@ import {
   SiSpotify,
   SiIheartradio,
   SiYoutubemusic,
-  SiAmazonmusic,
+  SiAmazon,
   SiPocketcasts,
   SiOvercast,
   SiYoutube,
@@ -54,7 +54,7 @@ function BrandIcon({ name }: { name: string }) {
     case "youtube-music":
       return <SiYoutubemusic color="currentColor" {...common} />;
     case "amazon-music":
-      return <SiAmazonmusic color="currentColor" {...common} />;
+      return <SiAmazon color="currentColor" {...common} />;
     case "pocket-casts":
       return <SiPocketcasts color="currentColor" {...common} />;
     case "overcast":

@@ -27,7 +27,13 @@ type PillIcon =
   | "overcast"
   | "youtube";
 
-function BrandIcon({ name, className = "h-3.5 w-3.5" }: { name: PillIcon; className?: string }) {
+function BrandIcon({
+  name,
+  className = "h-4 w-4 md:h-3.5 md:w-3.5",
+}: {
+  name: PillIcon;
+  className?: string;
+}) {
   switch (name) {
     case "apple-podcasts":
       return (
@@ -80,11 +86,19 @@ function BrandIcon({ name, className = "h-3.5 w-3.5" }: { name: PillIcon; classN
   }
 }
 
-function Pill({ href, label, icon }: { href: string; label: string; icon: PillIcon }) {
+function Pill({
+  href,
+  label,
+  icon,
+}: {
+  href: string;
+  label: string;
+  icon: PillIcon;
+}) {
   return (
     <a
       href={href}
-      className="inline-flex items-center gap-2 rounded-full bg-zinc-900/70 px-3 py-1.5 text-xs text-zinc-200 ring-1 ring-white/10 hover:bg-zinc-800 transition"
+      className="inline-flex items-center gap-2 rounded-full bg-zinc-900/70 px-3 py-2 text-xs md:py-1.5 md:text-[13px] text-zinc-200 ring-1 ring-white/10 hover:bg-zinc-800 transition"
     >
       <BrandIcon name={icon} />
       <span>{label}</span>
@@ -99,81 +113,67 @@ export default function ShowIntroPanel() {
                  bg-gradient-to-b from-zinc-900/60 via-zinc-900/30 to-transparent
                  p-4 md:p-6 lg:p-8"
     >
-      {/* Masthead strip (restored) */}
+      {/* Masthead strip */}
       <div className="w-full overflow-hidden">
         <img
           src="/logo-masthead.webp"
           alt="100 Metal Songs masthead"
-          className="block w-full h-auto max-h-36 object-contain"
+          className="block w-full h-auto max-h-24 md:max-h-36 object-contain mx-auto"
           loading="eager"
         />
       </div>
 
-      <div className="mt-6 relative grid grid-cols-1 md:grid-cols-[1fr,auto] gap-6 items-start">
-        {/* Left: copy + platform pills */}
-        <div>
-          <div className="inline-flex items-center rounded-full bg-blue-500/10 ring-1 ring-blue-400/40 px-3 py-1 text-xs font-medium text-blue-300 shadow-[0_0_14px_rgba(96,165,250,0.35)]">
-            About the show
-          </div>
-
-          {/* H1: hidden on mobile, visible md+ (SEO safe) */}
-          <h1 className="sr-only md:not-sr-only mt-3 text-2xl md:text-3xl font-semibold text-white">
-            100 Songs That Define Heavy Metal
-          </h1>
-
-          <p className="mt-3 text-sm md:text-[15px] leading-relaxed text-zinc-300 max-w-2xl">
-            <em>100 Songs That Define Heavy Metal</em> is a weekly podcast from{" "}
-            <strong>Metal Blade Records</strong> and <strong>Pantheon Media</strong>,
-            hosted by Metal Blade founder <strong>Brian Slagel</strong>. Each episode
-            dives into one track that shaped heavy metal—production stories, historical
-            angles, and why the song still matters today.
-          </p>
-
-          {/* Platforms */}
-          <div className="mt-5 space-y-3">
-            {/* LISTEN ON */}
-            <div>
-              <p className="text-[11px] uppercase tracking-widest text-zinc-400 mb-1.5">
-                Listen on
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <Pill href={LINKS.apple} label="Apple Podcasts" icon="apple-podcasts" />
-                <Pill href={LINKS.spotify} label="Spotify" icon="spotify" />
-                <Pill href={LINKS.iheart} label="iHeartRadio" icon="iheart" />
-                <Pill href={LINKS.ytmusic} label="YouTube Music" icon="youtube-music" />
-                <Pill href={LINKS.amazon} label="Amazon Music" icon="amazon-music" />
-                <Pill href={LINKS.pocketcasts} label="Pocket Casts" icon="pocket-casts" />
-                <Pill href={LINKS.overcast} label="Overcast" icon="overcast" />
-              </div>
-            </div>
-
-            {/* WATCH ON */}
-            <div>
-              <p className="text-[11px] uppercase tracking-widest text-zinc-400 mb-1.5">
-                Watch on
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <Pill href={LINKS.youtube} label="YouTube" icon="youtube" />
-              </div>
-            </div>
-          </div>
+      {/* Copy + Platforms */}
+      <div className="mt-5 md:mt-6">
+        <div className="inline-flex items-center rounded-full bg-blue-500/10 ring-1 ring-blue-400/40 px-3 py-1 text-xs font-medium text-blue-300 shadow-[0_0_14px_rgba(96,165,250,0.35)]">
+          About the show
         </div>
 
-        {/* Right: cover art with subtle red glow (desktop only) */}
-        <div className="hidden md:block justify-self-end">
-          <div className="relative h-36 w-36 lg:h-40 lg:w-40 rounded-xl overflow-hidden ring-1 ring-white/10 shadow-[0_0_28px_rgba(239,68,68,0.25)]">
-            <img
-              src="https://cdn.sanity.io/images/yd8iqvcg/production/8aa72bb1b387eba52a058b29af4c77fa1779985f-3000x3000.heif?w=400&h=400&fit=crop"
-              alt="100 Songs That Define Heavy Metal cover"
-              className="h-full w-full object-cover"
-            />
+        {/* H1: hidden on mobile, visible md+ (SEO safe) */}
+        <h1 className="sr-only md:not-sr-only mt-3 text-2xl md:text-3xl font-semibold text-white">
+          100 Songs That Define Heavy Metal
+        </h1>
+
+        <p className="mt-3 text-[15px] leading-relaxed text-zinc-300 md:max-w-2xl">
+          <em>100 Songs That Define Heavy Metal</em> is a weekly podcast from{" "}
+          <strong>Metal Blade Records</strong> and <strong>Pantheon Media</strong>,
+          hosted by Metal Blade founder <strong>Brian Slagel</strong>. Each episode
+          dives into one track that shaped heavy metal—production stories, historical
+          angles, and why the song still matters today.
+        </p>
+
+        {/* Platform pills — wrap nicely on small screens */}
+        <div className="mt-5 space-y-3">
+          {/* LISTEN ON */}
+          <div>
+            <p className="text-[11px] uppercase tracking-widest text-zinc-400 mb-1.5">
+              Listen on
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Pill href={LINKS.apple} label="Apple Podcasts" icon="apple-podcasts" />
+              <Pill href={LINKS.spotify} label="Spotify" icon="spotify" />
+              <Pill href={LINKS.iheart} label="iHeartRadio" icon="iheart" />
+              <Pill href={LINKS.ytmusic} label="YouTube Music" icon="youtube-music" />
+              <Pill href={LINKS.amazon} label="Amazon Music" icon="amazon-music" />
+              <Pill href={LINKS.pocketcasts} label="Pocket Casts" icon="pocket-casts" />
+              <Pill href={LINKS.overcast} label="Overcast" icon="overcast" />
+            </div>
+          </div>
+
+          {/* WATCH ON */}
+          <div>
+            <p className="text-[11px] uppercase tracking-widest text-zinc-400 mb-1.5">
+              Watch on
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Pill href={LINKS.youtube} label="YouTube" icon="youtube" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Social proof */}
-      <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {/* rating */}
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-center">
           <div className="mx-auto mb-1 text-yellow-300">
             <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden fill="currentColor">
@@ -183,8 +183,6 @@ export default function ShowIntroPanel() {
           <div className="text-sm font-semibold text-white">4.9</div>
           <div className="text-[11px] text-zinc-400">rating</div>
         </div>
-
-        {/* countries */}
         <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-center">
           <div className="mx-auto mb-1 text-cyan-300">
             <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden fill="currentColor">
@@ -194,8 +192,6 @@ export default function ShowIntroPanel() {
           <div className="text-sm font-semibold text-white">200+</div>
           <div className="text-[11px] text-zinc-400">countries</div>
         </div>
-
-        {/* streams */}
         <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-center">
           <div className="mx-auto mb-1 text-emerald-300">
             <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden fill="currentColor">

@@ -6,7 +6,6 @@ import {
   SiSpotify,
   SiIheartradio,
   SiYoutubemusic,
-  SiAmazon,
   SiPocketcasts,
   SiOvercast,
   SiYoutube,
@@ -41,26 +40,36 @@ const BRAND_COLORS: Record<string, string> = {
   youtube: "#FF0000",
 };
 
-/* ------------------- Icon Component Map (accurate brand SVGs) ------------------- */
+/* ------------------- Icon Mapper ------------------- */
 function BrandIcon({ name }: { name: string }) {
-  const common = { size: 18, title: undefined, className: "block" } as const;
+  const common = "h-4 w-4 md:h-3.5 md:w-3.5 text-white";
   switch (name) {
     case "apple-podcasts":
-      return <SiApplepodcasts color="currentColor" {...common} />;
+      return <SiApplepodcasts className={common} title="" />;
     case "spotify":
-      return <SiSpotify color="currentColor" {...common} />;
+      return <SiSpotify className={common} title="" />;
     case "iheart":
-      return <SiIheartradio color="currentColor" {...common} />;
+      return <SiIheartradio className={common} title="" />;
     case "youtube-music":
-      return <SiYoutubemusic color="currentColor" {...common} />;
-    case "amazon-music":
-      return <SiAmazon color="currentColor" {...common} />;
+      return <SiYoutubemusic className={common} title="" />;
     case "pocket-casts":
-      return <SiPocketcasts color="currentColor" {...common} />;
+      return <SiPocketcasts className={common} title="" />;
     case "overcast":
-      return <SiOvercast color="currentColor" {...common} />;
+      return <SiOvercast className={common} title="" />;
     case "youtube":
-      return <SiYoutube color="currentColor" {...common} />;
+      return <SiYoutube className={common} title="" />;
+
+    /* Amazon Music: use local official SVG */
+    case "amazon-music":
+      return (
+        <img
+          src="/icons/amazon-music.svg"
+          alt=""
+          className="h-4 w-4 md:h-3.5 md:w-3.5"
+          loading="eager"
+        />
+      );
+
     default:
       return null;
   }
@@ -77,40 +86,30 @@ function Pill({
   icon: keyof typeof BRAND_COLORS | string;
 }) {
   const brand = BRAND_COLORS[icon as string] || "#ffffff";
-
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      /* 
-        Mobile: icons/text are white; subtle brand glow is ON by default (opacity-40).
-        Desktop: glow fades in on hover (opacity-0 -> 100) and is stronger.
-      */
       className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full
                  bg-zinc-900/70 px-3 py-2 text-xs md:py-1.5 md:text-[13px]
                  text-zinc-200 ring-1 ring-white/10 transition-colors duration-300
                  hover:bg-zinc-800"
-      style={{ color: "white" }} // icons inherit currentColor
+      style={{ color: "white" }}
     >
-      {/* Glow layer (mobile default ON, desktop on hover) */}
+      {/* Glow: mobile default ON (opacity-40), desktop on hover */}
       <span
-        className="
-          pointer-events-none absolute inset-[-2px] rounded-full blur-lg
-          opacity-40 md:opacity-0 md:group-hover:opacity-100
-          transition-opacity duration-300
-        "
+        className="pointer-events-none absolute inset-[-2px] rounded-full blur-lg
+                   opacity-40 md:opacity-0 md:group-hover:opacity-100
+                   transition-opacity duration-300"
         style={{
           background: `radial-gradient(circle at 30% 50%, ${brand}66 0%, ${brand}22 35%, transparent 70%)`,
           boxShadow: `0 0 18px ${brand}66, 0 0 32px ${brand}33`,
           mixBlendMode: "screen",
         }}
       />
-
       <span className="relative z-10 flex items-center gap-2">
-        <span className="h-4 w-4 md:h-3.5 md:w-3.5 text-white">
-          <BrandIcon name={icon as string} />
-        </span>
+        <BrandIcon name={icon as string} />
         <span className="text-zinc-200 group-hover:text-white">{label}</span>
       </span>
     </a>

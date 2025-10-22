@@ -38,7 +38,7 @@ function BrandIcon({ name }: { name: string }) {
       alt=""
       width={18}
       height={18}
-      className="h-4 w-4 md:h-3.5 md:w-3.5 invert brightness-110"
+      className="relative z-10 h-4 w-4 md:h-3.5 md:w-3.5 filter invert brightness-200 transition-transform duration-300 group-hover:scale-110"
       loading="eager"
     />
   );
@@ -60,21 +60,23 @@ function Pill({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative inline-flex items-center gap-2 rounded-full bg-zinc-900/70 px-3 py-2 text-xs md:py-1.5 md:text-[13px] text-zinc-200 ring-1 ring-white/10 transition-all hover:bg-zinc-800"
-      style={{
-        boxShadow: `0 0 0 rgba(0,0,0,0)`,
-      }}
+      className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full
+                 bg-zinc-900/70 px-3 py-2 text-xs md:py-1.5 md:text-[13px]
+                 text-zinc-200 ring-1 ring-white/10 transition-all duration-300
+                 hover:bg-zinc-800"
     >
-      <BrandIcon name={icon} />
-      <span className="text-zinc-200 group-hover:text-white">{label}</span>
-
-      {/* Glow overlay on hover */}
+      {/* brand-colored glow behind content */}
       <span
-        className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"
+        className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-300"
         style={{
-          boxShadow: `0 0 10px 2px ${brandColor}55, 0 0 25px ${brandColor}33`,
+          background: `radial-gradient(circle at center, ${brandColor}44 0%, transparent 70%)`,
+          zIndex: 0,
         }}
       />
+      <BrandIcon name={icon} />
+      <span className="relative z-10 text-zinc-200 group-hover:text-white transition-colors duration-300">
+        {label}
+      </span>
     </a>
   );
 }
@@ -98,7 +100,7 @@ export default function ShowIntroPanel() {
       </div>
 
       {/* Copy + Platforms */}
-      <div className="mt-5 md:mt-6">
+      <div className="mt-5 md:mt-6 relative z-10">
         <div className="inline-flex items-center rounded-full bg-blue-500/10 ring-1 ring-blue-400/40 px-3 py-1 text-xs font-medium text-blue-300 shadow-[0_0_14px_rgba(96,165,250,0.35)]">
           About the show
         </div>
@@ -144,10 +146,10 @@ export default function ShowIntroPanel() {
       </div>
 
       {/* Social proof */}
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10">
         <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-center">
           <div className="mx-auto mb-1 text-yellow-300">
-            <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden fill="currentColor">
+            <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" fill="currentColor">
               <path d="M12 2.5 14.9 9l6.6.5-5 4 1.6 6.3L12 16.7 5.9 19.8 7.5 13l-5-4 6.6-.5L12 2.5Z" />
             </svg>
           </div>
@@ -156,7 +158,7 @@ export default function ShowIntroPanel() {
         </div>
         <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-center">
           <div className="mx-auto mb-1 text-cyan-300">
-            <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden fill="currentColor">
+            <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" fill="currentColor">
               <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 2c1.7 0 3.2.6 4.4 1.6H7.6A8 8 0 0 1 12 4Zm-6 8c0-.7.1-1.3.3-2h11.4c.2.7.3 1.3.3 2s-.1 1.3-.3 2H6.3A7.9 7.9 0 0 1 6 12Zm1.6 4.4h8.8A8 8 0 0 1 12 20a8 8 0 0 1-4.4-1.6Z" />
             </svg>
           </div>
@@ -165,7 +167,7 @@ export default function ShowIntroPanel() {
         </div>
         <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-center">
           <div className="mx-auto mb-1 text-emerald-300">
-            <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden fill="currentColor">
+            <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" fill="currentColor">
               <path d="M12 3a1 1 0 0 1 1 1v8.6l2.6-2.6 1.4 1.4L12 17.4 7 11.4l1.4-1.4 2.6 2.6V4a1 1 0 0 1 1-1Zm-7 14h14v2H5v-2Z" />
             </svg>
           </div>
@@ -175,5 +177,3 @@ export default function ShowIntroPanel() {
       </div>
     </section>
   );
-}
-

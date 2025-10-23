@@ -1,14 +1,13 @@
 // src/app/page.tsx
-// Hotfix: Surface newest Megaphone item above the Sanity hero (no banner).
+// Clean version: RSS Latest Episode replaces HeroLatest
 
-export const dynamic = "force-dynamic"; // ensure fresh RSS during hotfix
+export const dynamic = "force-dynamic"; // always fetch fresh RSS
 export const revalidate = 0;
 
 import { createClient } from "@sanity/client";
 import EpisodesGridClean from "@/app/components/EpisodesGridClean";
 import EmailSignup from "@/app/components/EmailSignup";
 import ShowIntroPanel from "@/app/components/ShowIntroPanel";
-import HeroLatest from "@/app/components/HeroLatest";
 
 /* ---------------- Sanity client (read-only) ---------------- */
 const client = createClient({
@@ -31,18 +30,9 @@ const episodeFields = `
   links
 `;
 
-const DATE_KEY = "coalesce(publishedAt, pubDate, _createdAt)";
-
-const heroQuery = `
-*[_type == "episode"]
-| order(${DATE_KEY} desc)[0]{
-  ${episodeFields}
-}
-`;
-
 const gridQuery = `
 *[_type == "episode"]
-| order(${DATE_KEY} desc)[1...9]{
+| order(coalesce(publishedAt, pubDate, _createdAt) desc)[0...9]{
   ${episodeFields}
 }
 `;
@@ -120,7 +110,7 @@ function RssLatestCard({ item }: { item: RssItem }) {
     <section className="rounded-2xl border border-red-500/20 bg-gradient-to-br from-red-500/10 via-zinc-900/40 to-zinc-900/20 p-5 md:p-6 shadow-[0_0_24px_rgba(239,68,68,0.25)]">
       <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-red-500/15 px-3 py-1 text-xs font-medium text-red-200 ring-1 ring-red-500/30">
         <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
-        Latest Episode (from RSS)
+        Latest Episode
       </div>
 
       <div className="flex items-start gap-4">
@@ -132,7 +122,9 @@ function RssLatestCard({ item }: { item: RssItem }) {
             <div className="text-xs text-zinc-400 mb-3">{dateStr}</div>
           ) : null}
           {item.description ? (
-            <p className="text-sm text-zinc-300 mb-4 line-clamp-4">{item.description}</p>
+            <p className="text-sm text-zinc-300 mb-4 line-clamp-4">
+              {item.description}
+            </p>
           ) : null}
 
           <div className="flex flex-wrap items-center gap-2">
@@ -143,7 +135,14 @@ function RssLatestCard({ item }: { item: RssItem }) {
               className="inline-flex items-center gap-2 rounded-full bg-red-600/90 px-4 py-2 text-sm font-medium text-white shadow-[0_0_15px_rgba(239,68,68,0.35)] transition-all hover:bg-red-500 hover:shadow-[0_0_20px_rgba(239,68,68,0.45)] focus:outline-none focus:ring-2 focus:ring-red-400/60 focus:ring-offset-2 focus:ring-offset-black"
             >
               Listen
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="h-4 w-4"
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </a>
@@ -173,29 +172,18 @@ function RssLatestCard({ item }: { item: RssItem }) {
 
 /* ----------------------------- Page ----------------------------- */
 export default async function Page() {
-  const [hero, episodes, rssLatest] = await Promise.all([
-    client.fetch(heroQuery),
+  const [episodes, rssLatest] = await Promise.all([
     client.fetch(gridQuery),
     fetchLatestFromRSS(),
   ]);
-
-  const sanityISO =
-    (hero?.publishedAt || hero?.pubDate || hero?._createdAt) ?? null;
-  const sanityDate = toDate(sanityISO);
-  const rssDate = toDate(rssLatest?.pubDate);
-  const rssIsNewer =
-    rssDate && (!sanityDate || rssDate.getTime() > sanityDate.getTime());
 
   return (
     <main className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8 space-y-10">
       {/* Show Intro */}
       <ShowIntroPanel />
 
-      {/* If RSS has something newer, show it first (bypasses Sanity) */}
-      {rssIsNewer && rssLatest ? <RssLatestCard item={rssLatest} /> : null}
-
-      {/* Your existing Sanity hero (remains for continuity) */}
-      {hero ? <HeroLatest ep={hero} /> : null}
+      {/* RSS: always display the latest episode */}
+      {rssLatest ? <RssLatestCard item={rssLatest} /> : null}
 
       {/* CTA — email signup */}
       <EmailSignup
@@ -222,7 +210,14 @@ export default async function Page() {
                       focus:outline-none focus:ring-2 focus:ring-red-400/60 focus:ring-offset-2 focus:ring-offset-black"
           >
             More Episodes
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-4 w-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="h-4 w-4"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </a>

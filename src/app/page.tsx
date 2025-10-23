@@ -1,7 +1,8 @@
 // src/app/page.tsx
-// Clean version: RSS Latest Episode replaces HeroLatest
+// RSS is the sole source for the Latest Episode.
+// Adds duration, Listen -> MP3, Watch -> episode page.
 
-export const dynamic = "force-dynamic"; // always fetch fresh RSS
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 import { createClient } from "@sanity/client";
@@ -40,10 +41,12 @@ const gridQuery = `
 /* ---------------- Megaphone RSS (no cache) ---------------- */
 type RssItem = {
   title: string;
-  link: string;
+  link: string;          // episode page
   pubDate?: string;
   description?: string;
   image?: string;
+  audioUrl?: string;     // mp3 enclosure
+  duration?: string;     // normalized, e.g., "49:15" or "1:02:03"
 };
 
 function parseTag(xmlChunk: string, tag: string) {
@@ -55,6 +58,37 @@ function parseTag(xmlChunk: string, tag: string) {
 function stripHtml(s?: string) {
   if (!s) return "";
   return s.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+}
+
+function normalizeDuration(raw?: string) {
+  if (!raw) return undefined;
+  // Accept "HH:MM:SS", "MM:SS", or seconds as integer.
+  const s = raw.trim();
+  if (/^\d+$/.test(s)) {
+    // seconds -> H:MM:SS or M:SS
+    const total = parseInt(s, 10);
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const sec = total % 60;
+    const two = (n: number) => String(n).padStart(2, "0");
+    return h > 0 ? `${h}:${two(m)}:${two(sec)}` : `${m}:${two(sec)}`;
+  }
+  if (/^\d{1,2}:\d{2}(:\d{2})?$/.test(s)) {
+    // Already MM:SS or H:MM:SS
+    const parts = s.split(":").map((n) => parseInt(n, 10));
+    if (parts.length === 2) {
+      const [m, sec] = parts;
+      const two = (n: number) => String(n).padStart(2, "0");
+      return `${m}:${two(sec)}`;
+    }
+    if (parts.length === 3) {
+      const [h, m, sec] = parts;
+      const two = (n: number) => String(n).padStart(2, "0");
+      return `${h}:${two(m)}:${two(sec)}`;
+    }
+  }
+  // Fallback to raw string
+  return s;
 }
 
 async function fetchLatestFromRSS(): Promise<RssItem | null> {
@@ -79,6 +113,10 @@ async function fetchLatestFromRSS(): Promise<RssItem | null> {
     parseTag(item, "content:encoded") ||
     parseTag(item, "description") ||
     "";
+  // enclosure url="..." type="audio/mpeg"
+  const enclosure = item.match(/<enclosure[^>]*url="([^"]+)"[^>]*>/i)?.[1];
+  const itunesDuration = parseTag(item, "itunes:duration");
+  const duration = normalizeDuration(itunesDuration);
 
   return {
     title,
@@ -86,6 +124,8 @@ async function fetchLatestFromRSS(): Promise<RssItem | null> {
     pubDate,
     description: stripHtml(description),
     image: itunesImage,
+    audioUrl: enclosure,
+    duration,
   };
 }
 
@@ -118,9 +158,16 @@ function RssLatestCard({ item }: { item: RssItem }) {
           <h2 className="text-xl md:text-2xl font-semibold text-white mb-1">
             {item.title}
           </h2>
-          {dateStr ? (
-            <div className="text-xs text-zinc-400 mb-3">{dateStr}</div>
+
+          {/* Date + Duration */}
+          {(dateStr || item.duration) ? (
+            <div className="text-xs text-zinc-400 mb-3">
+              {dateStr}
+              {dateStr && item.duration ? " • " : ""}
+              {item.duration ? item.duration : null}
+            </div>
           ) : null}
+
           {item.description ? (
             <p className="text-sm text-zinc-300 mb-4 line-clamp-4">
               {item.description}
@@ -128,8 +175,9 @@ function RssLatestCard({ item }: { item: RssItem }) {
           ) : null}
 
           <div className="flex flex-wrap items-center gap-2">
+            {/* LISTEN -> MP3 enclosure; fallback to link */}
             <a
-              href={item.link}
+              href={item.audioUrl || item.link}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-red-600/90 px-4 py-2 text-sm font-medium text-white shadow-[0_0_15px_rgba(239,68,68,0.35)] transition-all hover:bg-red-500 hover:shadow-[0_0_20px_rgba(239,68,68,0.45)] focus:outline-none focus:ring-2 focus:ring-red-400/60 focus:ring-offset-2 focus:ring-offset-black"
@@ -146,8 +194,10 @@ function RssLatestCard({ item }: { item: RssItem }) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </a>
+
+            {/* WATCH -> Episode page (link) */}
             <a
-              href="https://www.youtube.com/@100MetalSongs"
+              href={item.link}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-zinc-800/80 px-4 py-2 text-sm font-medium text-zinc-200 ring-1 ring-white/10 hover:bg-zinc-800"
